@@ -1,0 +1,27 @@
+@use './variables.scss';
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: variables.$defaultBackgroundColor;
+}
+
+#root {
+    margin: 0 auto;
+    padding: 0;
+    font-family: variables.$defaultFont;
+    font-weight: 400;
+    color: variables.$defaultFontColor;
+    box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+    padding: 0;
+}
