@@ -1,9 +1,18 @@
-import './header.scss'
-import Logo from './../../assets/img/argentBankLogo.png'
-import { NavLink, useLocation } from 'react-router-dom'
+import "./header.scss";
+import Logo from "./../../assets/img/argentBankLogo.png";
+import { NavLink } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "./../../app/userSlice"; // Import de l'action logout
 
 function Header() {
-  const location = useLocation();
+  const dispatch = useDispatch();
+
+  // Récupération des infos utilisateur depuis Redux
+  const { firstName, isAuthenticated } = useSelector((state) => state.user);
+
+  const handleLogout = () => {
+    dispatch(logout()); // Déconnexion de l'utilisateur
+  };
 
   return (
     <header>
@@ -12,11 +21,12 @@ function Header() {
           <img className="main-nav-logo-image" src={Logo} alt="Argent Bank Logo" />
           <h1 className="sr-only">Argent Bank</h1>
         </NavLink>
-        {location.pathname === "/dashboard" ? (
+        {isAuthenticated ? (
           <div>
             <NavLink to={`/dashboard`} className="main-nav-item">
-              <i className="fa fa-user-circle"></i> Tony </NavLink>
-            <NavLink to={`/`} className="main-nav-item">
+              <i className="fa fa-user-circle"></i> {firstName}
+            </NavLink>
+            <NavLink to={`/`} className="main-nav-item" onClick={handleLogout}>
               <i className="fa fa-sign-out"></i> Sign Out
             </NavLink>
           </div>

@@ -25,7 +25,7 @@ function EditNameForm() {
                 </div>
             ) : (
                 <form className="editNameForm" onSubmit={handleSubmit}>
-                    <div className="input-group">
+                    <div className="input-group colum">
                         <div className="input-wrapper">
                             <label className="sr-only" htmlFor="firstname">
                                 Firstname

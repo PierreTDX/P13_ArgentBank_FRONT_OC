@@ -1,8 +1,14 @@
 import './signin.scss'
 import { NavLink } from 'react-router-dom'
-
+import { useDispatch } from "react-redux";
+import { login } from "./../../app/userSlice"; // Import de l'action logout
 
 function Signin() {
+    const dispatch = useDispatch();
+
+    const handleLogin = () => {
+        dispatch(login()); // Connexion de l'utilisateur
+    };
 
     return (
         <>
@@ -25,11 +31,7 @@ function Signin() {
                                 >Remember me</label
                                 >
                             </div>
-                            {/* <!-- PLACEHOLDER DUE TO STATIC SITE --> */}
-                            <NavLink to={`/dashboard`} className="sign-in-button">Sign In</NavLink>
-                            {/* <!-- SHOULD BE THE BUTTON BELOW --> */}
-                            {/* <!-- <button className="sign-in-button">Sign In</button> --> */}
-                            {/* <!--  --> */}
+                            <NavLink to={`/dashboard`} className="sign-in-button" onClick={handleLogin}>Sign In</NavLink>
                         </form>
                     </section>
                 </main>
