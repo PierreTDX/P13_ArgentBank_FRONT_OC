@@ -3,12 +3,14 @@ import Logo from "./../../assets/img/argentBankLogo.png";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "./../../app/userSlice"; // Import de l'action logout
+import { selectFirstName, selectIsAuthenticated } from "./../../app/selectors"; // Import des sélecteurs
 
 function Header() {
   const dispatch = useDispatch();
 
-  // Récupération des infos utilisateur depuis Redux
-  const { firstName, isAuthenticated } = useSelector((state) => state.user);
+  // Utilisation des sélecteurs pour récupérer les infos utilisateur depuis Redux
+  const firstName = useSelector(selectFirstName);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const handleLogout = () => {
     dispatch(logout()); // Déconnexion de l'utilisateur
@@ -22,7 +24,7 @@ function Header() {
           <h1 className="sr-only">Argent Bank</h1>
         </NavLink>
         {isAuthenticated ? (
-          <div>
+          <div className="main-nav-content-item">
             <NavLink to={`/dashboard`} className="main-nav-item">
               <i className="fa fa-user-circle"></i> {firstName}
             </NavLink>

@@ -1,5 +1,12 @@
 @use './../../utils/style/variables.scss';
 
+header {
+    position: sticky;
+    top: 0;
+    background-color: variables.$defaultBackgroundColor;
+    z-index: 100;
+}
+
 .main-nav {
     display: flex;
     justify-content: space-between;
@@ -33,4 +40,25 @@
 .main-nav-logo-image {
     max-width: 100%;
     width: 200px;
+}
+
+@media (max-width: 720px) {
+    // .main-nav-item span {
+    //     display: none;
+    // }
+
+    .main-nav-item {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        text-align: end;
+        gap: 5px;
+    }
+
+    .main-nav-content-item {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 5px;
+        align-items: end;
+    }
 }

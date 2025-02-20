@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "./../../app/userSlice"; // Import de l'action Redux
+import { selectFirstName, selectLastName } from "./../../app/selectors"; // Import des sélecteurs
 import "./editNameForm.scss";
 
 function EditNameForm() {
     const dispatch = useDispatch();
 
-    // Récupération des valeurs actuelles depuis Redux
-    const { firstName, lastName } = useSelector((state) => state.user);
+    // Utilisation des sélecteurs pour récupérer les valeurs depuis Redux
+    const firstName = useSelector(selectFirstName);
+    const lastName = useSelector(selectLastName);
 
     // États locaux temporaires pour l'édition
     const [isEditing, setIsEditing] = useState(false);

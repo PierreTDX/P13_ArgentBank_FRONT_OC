@@ -1,7 +1,7 @@
 import './signin.scss'
 import { NavLink } from 'react-router-dom'
 import { useDispatch } from "react-redux";
-import { login, logout } from "./../../app/userSlice"; // Import de l'action login et logout si besoin
+import { login } from "./../../app/userSlice"; // Import de l'action login et logout si besoin
 
 function Signin() {
     const dispatch = useDispatch();
@@ -22,17 +22,16 @@ function Signin() {
                         <h1>Sign In</h1>
                         <form>
                             <div className="input-wrapper">
-                                <label htmlFor="username">Username</label
-                                ><input type="text" id="username" />
+                                <label htmlFor="username">Username</label>
+                                <input type="text" id="username" />
                             </div>
                             <div className="input-wrapper">
-                                <label htmlFor="password">Password</label
-                                ><input type="password" id="password" />
+                                <label htmlFor="password">Password</label>
+                                <input type="password" id="password" />
                             </div>
                             <div className="input-remember">
                                 <input type="checkbox" id="remember-me" /><label htmlFor="remember-me"
-                                >Remember me</label
-                                >
+                                >Remember me</label>
                             </div>
                             <NavLink to={`/dashboard`} className="sign-in-button" onClick={handleLogin}>Sign In</NavLink>
                         </form>
