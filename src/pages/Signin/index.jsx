@@ -1,13 +1,16 @@
 import './signin.scss'
 import { NavLink } from 'react-router-dom'
 import { useDispatch } from "react-redux";
-import { login } from "./../../app/userSlice"; // Import de l'action logout
+import { login, logout } from "./../../app/userSlice"; // Import de l'action login et logout si besoin
 
 function Signin() {
     const dispatch = useDispatch();
 
     const handleLogin = () => {
         dispatch(login()); // Connexion de l'utilisateur
+        // setTimeout(() => {
+        //     dispatch(logout()); // Déconnexion après 10 secondes
+        // }, 10000);
     };
 
     return (
