@@ -1,4 +1,5 @@
 import './dashboard.scss';
+import EditNameForm from '../../components/EditNameForm';
 
 function Dashboard() {
 
@@ -7,8 +8,8 @@ function Dashboard() {
             <div className='bodyPage'>
                 <main className="main bg-dark">
                     <div className="header">
-                        <h1>Welcome back<br />Tony Jarvis!</h1>
-                        <button className="edit-button">Edit Name</button>
+                        <h1>Welcome back</h1>
+                        <EditNameForm />
                     </div>
                     <h2 className="sr-only">Accounts</h2>
                     <section className="account">

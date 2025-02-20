@@ -1,0 +1,24 @@
+@use './../../utils/style/variables.scss';
+
+.editNameForm {
+    margin-top: 11px;
+}
+
+.input-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.editNameinput {
+    width: 200px;
+}
+
+.input-group button {
+    width: 90px;
+}
+
+.edit-button-danger {
+    border-color: #bc2600;
+    background-color: #bc2600;
+}
