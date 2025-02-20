@@ -6,7 +6,7 @@ import Error from "./components/404"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
 
@@ -16,11 +16,15 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-
           <Route path="/signin" element={<Signin />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-
           <Route path="/*" element={<Error />} />
+
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+
         </Routes>
         <Footer />
       </Router>
