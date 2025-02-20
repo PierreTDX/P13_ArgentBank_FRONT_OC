@@ -1,12 +1,16 @@
 import './404.scss'
+import { NavLink } from 'react-router-dom'
 
 function Error() {
 
     return (
         <>
-            <main className='error'>
-                <p>Cette page n&apos;existe pas</p>
-            </main>
+            <div className='bodyPage'>
+                <main className="main bg-dark error">
+                    <h1>Cette page n&apos;existe pas</h1>
+                    <NavLink to={'/'}>retour accueil</NavLink >
+                </main>
+            </div>
         </>
     )
 }

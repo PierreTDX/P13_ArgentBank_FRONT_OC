@@ -13,7 +13,7 @@ function Header() {
           <h1 className="sr-only">Argent Bank</h1>
         </NavLink>
         {location.pathname === "/dashboard" ? (
-          <div className="2">
+          <div>
             <NavLink to={`/dashboard`} className="main-nav-item">
               <i className="fa fa-user-circle"></i> Tony </NavLink>
             <NavLink to={`/`} className="main-nav-item">
@@ -21,7 +21,7 @@ function Header() {
             </NavLink>
           </div>
         ) : (
-          <div className="1">
+          <div>
             <NavLink to={`/signin`} className="main-nav-item">
               <i className="fa fa-user-circle"></i> Sign In
             </NavLink>
