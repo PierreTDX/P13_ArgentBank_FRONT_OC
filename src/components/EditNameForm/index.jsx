@@ -1,27 +1,23 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "./../../app/userSlice"; // Import de l'action Redux
-import { selectFirstName, selectLastName } from "./../../app/selectors"; // Import des sélecteurs
+import { setUser } from "./../../app/userSlice";
+import { selectFirstName, selectLastName } from "./../../app/selectors";
 import "./editNameForm.scss";
 
 function EditNameForm() {
     const dispatch = useDispatch();
-
-    // Utilisation des sélecteurs pour récupérer les valeurs depuis Redux
     const firstName = useSelector(selectFirstName);
     const lastName = useSelector(selectLastName);
 
-    // États locaux temporaires pour l'édition
     const [isEditing, setIsEditing] = useState(false);
-    const [tempFirstName, setTempFirstName] = useState(firstName);
-    const [tempLastName, setTempLastName] = useState(lastName);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Mise à jour des valeurs dans le store Redux seulement au "Save"
-        dispatch(setUser({ firstName: tempFirstName, lastName: tempLastName }));
-
+        const formData = new FormData(e.target);
+        dispatch(setUser({
+            firstName: formData.get("firstname"),
+            lastName: formData.get("lastname")
+        }));
         setIsEditing(false);
     };
 
@@ -30,46 +26,46 @@ function EditNameForm() {
             {!isEditing ? (
                 <div className="editName">
                     <h2>{firstName} {lastName}!</h2>
-                    <button className="edit-button" onClick={() => {
-                        setTempFirstName(firstName); // Réinitialiser les inputs
-                        setTempLastName(lastName);
-                        setIsEditing(true);
-                    }}>
+                    <button className="edit-button" onClick={() => setIsEditing(true)}>
                         Edit Name
                     </button>
                 </div>
             ) : (
                 <form className="editNameForm" onSubmit={handleSubmit}>
-                    <div className="input-group column">
+                    <div className="input-group">
                         <div className="input-wrapper">
-                            <label className="sr-only" htmlFor="firstname"> Firstname </label>
+                            <label className="sr-only" htmlFor="firstname">
+                                Firstname
+                            </label>
                             <input
                                 className="editNameinput"
                                 type="text"
                                 id="firstname"
                                 name="firstname"
-                                value={tempFirstName}
-                                onChange={(e) => setTempFirstName(e.target.value)}
+                                defaultValue={firstName}
                             />
                         </div>
                         <div className="input-wrapper">
-                            <label className="sr-only" htmlFor="lastname"> Lastname </label>
+                            <label className="sr-only" htmlFor="lastname">
+                                Lastname
+                            </label>
                             <input
                                 className="editNameinput"
                                 type="text"
                                 id="lastname"
                                 name="lastname"
-                                value={tempLastName}
-                                onChange={(e) => setTempLastName(e.target.value)}
+                                defaultValue={lastName}
                             />
                         </div>
                     </div>
                     <div className="input-group">
-                        <button type="submit" className="edit-button"> Save </button>
+                        <button type="submit" className="edit-button">
+                            Save
+                        </button>
                         <button
                             type="button"
                             className="edit-button edit-button-danger"
-                            onClick={() => setIsEditing(false)} // Annule sans rien modifier
+                            onClick={() => setIsEditing(false)}
                         >
                             Cancel
                         </button>
