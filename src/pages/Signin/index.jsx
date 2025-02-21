@@ -68,8 +68,8 @@ function Signin() {
                         </button>
                     </form>
                 </section>
-                <p>Username : tony@stark.com</p>
-                <p>Password : password123</p>
+                <p>Username : tony@stark.com / steve@rogers.com</p>
+                <p>Password : password123 / password234</p>
             </main>
         </div>
     );

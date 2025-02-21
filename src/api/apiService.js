@@ -64,13 +64,24 @@ export const getUserProfile = async () => {
     
 // Fonction pour mettre à jour le profil utilisateur
 export const updateUserProfile = async (profileData) => {
-  try {
-    const response = await apiService.put("/user/profile", profileData);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error.message;
-  }
-};
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token non trouvé, veuillez vous connecter");
+      }
+  
+      const response = await apiService.put("/user/profile", profileData, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Ajoute le token dans l'en-tête
+          "Content-Type": "application/json",
+        },
+      });
+  
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  };
 
 // Fonction pour se déconnecter
 export const logout = () => {

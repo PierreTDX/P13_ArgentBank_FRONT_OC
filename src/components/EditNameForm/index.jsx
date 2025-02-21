@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../../app/userSlice";
 import { selectUser } from "../../app/selectors";
-import { getUserProfile } from "../../api/apiService"; // Assure-toi que le chemin est correct
+import { getUserProfile, updateUserProfile } from "../../api/apiService";
 import "./editNameForm.scss";
 
 function EditNameForm() {
@@ -10,29 +10,35 @@ function EditNameForm() {
     const { firstName, lastName } = useSelector(selectUser);
     const [isEditing, setIsEditing] = useState(false);
 
-    // Utiliser useEffect pour récupérer les données de l'utilisateur
     useEffect(() => {
         const fetchUserProfile = async () => {
             try {
                 const userProfile = await getUserProfile();
-                dispatch(setUser(userProfile.body)); // Passer toutes les données du profil à Redux
+                dispatch(setUser(userProfile.body));
             } catch (error) {
                 console.error("Erreur lors de la récupération du profil utilisateur:", error);
             }
         };
 
         fetchUserProfile();
-    }, [dispatch]); // Appel uniquement lors du montage du composant
+    }, [dispatch]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
         const formData = new FormData(e.target);
-        // Mettez à jour le profil utilisateur dans Redux avec les nouvelles valeurs du formulaire
-        dispatch(setUser({
-            firstName: formData.get("firstname"),
-            lastName: formData.get("lastname")
-        }));
-        setIsEditing(false); // Ferme le mode d'édition après la soumission
+        const updatedData = {
+            firstName: formData.get("firstName"),
+            lastName: formData.get("lastName"),
+        };
+
+        try {
+            const updatedUser = await updateUserProfile(updatedData);
+            dispatch(setUser(updatedUser.body));
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour du profil utilisateur:", error);
+        }
     };
 
     return (
@@ -55,8 +61,8 @@ function EditNameForm() {
                                 className="editNameinput"
                                 type="text"
                                 id="firstname"
-                                name="firstname"
-                                defaultValue={firstName} // Utiliser la valeur par défaut de Redux
+                                name="firstName"
+                                defaultValue={firstName}
                             />
                         </div>
                         <div className="input-wrapper">
@@ -67,8 +73,8 @@ function EditNameForm() {
                                 className="editNameinput"
                                 type="text"
                                 id="lastname"
-                                name="lastname"
-                                defaultValue={lastName} // Utiliser la valeur par défaut de Redux
+                                name="lastName"
+                                defaultValue={lastName}
                             />
                         </div>
                     </div>
