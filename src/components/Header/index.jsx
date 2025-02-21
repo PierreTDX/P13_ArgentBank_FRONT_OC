@@ -2,18 +2,18 @@ import "./header.scss";
 import Logo from "./../../assets/img/argentBankLogo.png";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "./../../app/userSlice"; // Import de l'action logout
-import { selectFirstName, selectIsAuthenticated } from "./../../app/selectors"; // Import des sélecteurs
+import { logoutAction } from "../../app/logSlice"; // Import de l'action logout
+import { selectFirstName, selectToken } from "./../../app/selectors"; // Import des sélecteurs
 
 function Header() {
   const dispatch = useDispatch();
 
   // Utilisation des sélecteurs pour récupérer les infos utilisateur depuis Redux
   const firstName = useSelector(selectFirstName);
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAuthenticated = useSelector(selectToken);
 
   const handleLogout = () => {
-    dispatch(logout()); // Déconnexion de l'utilisateur
+    dispatch(logoutAction()); // Déconnexion de l'utilisateur
   };
 
   return (

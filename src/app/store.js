@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit"
+import logReducer from "./logSlice"
 import userReducer from "./userSlice"
 
 export const store = configureStore({
   reducer: {
-    user: userReducer, // Ajout du reducer user
+    login: logReducer,
+    user: userReducer,
   },
 })

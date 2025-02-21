@@ -2,7 +2,7 @@ import "./signin.scss";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login as loginAction } from "./../../app/userSlice"; // Action Redux
+import { loginAction } from "../../app/logSlice"; // Action Redux
 import { login } from "./../../api/apiService"; // Fonction API
 
 function Signin() {
@@ -21,17 +21,10 @@ function Signin() {
             const data = await login(email, password);
 
             // Récupération du token depuis la réponse
-            const token = data.body.token; // Tu récupères le token de la réponse
-
-            // Optionnel : Pour récupérer d'autres données (ex: firstName, lastName) si l'API les envoie
-            const userInfo = {
-                token: token,
-                firstName: "Tony", // Remplace avec les données reçues de l'API si disponibles
-                lastName: "Jarvis", // Pareil ici
-            };
+            const token = data.body.token; // récupère le token de la réponse
 
             // Dispatch de l'action login avec le token
-            dispatch(loginAction(userInfo));
+            dispatch(loginAction({ token: token }));
 
             // Redirection vers le dashboard
             navigate("/dashboard");
