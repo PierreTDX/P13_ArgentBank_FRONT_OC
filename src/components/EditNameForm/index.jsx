@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "./../../app/userSlice";
-import { selectFirstName, selectLastName } from "./../../app/selectors";
+import { selectUser } from "./../../app/selectors";
 import "./editNameForm.scss";
 
 function EditNameForm() {
     const dispatch = useDispatch();
-    const firstName = useSelector(selectFirstName);
-    const lastName = useSelector(selectLastName);
+    const { firstName, lastName } = useSelector(selectUser);
 
     const [isEditing, setIsEditing] = useState(false);
 
