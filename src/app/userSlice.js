@@ -1,8 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  firstName: "Tony", // Valeur vide, à remplir après la connexion
-  lastName: "Jarvis",  // Idem
+    email: "",
+    firstName: "",
+    lastName: "",
+    createdAt: "",
+    updatedAt: "",
+    id: "",
 };
 
 const userSlice = createSlice({
@@ -10,12 +14,11 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      // Mise à jour des informations utilisateur après la connexion
-      state.firstName = action.payload.firstName;
-      state.lastName = action.payload.lastName;
+      Object.assign(state, action.payload); // Met à jour chaque propriété de state
     },
   },
 });
+
 
 export const { setUser } = userSlice.actions;
 export default userSlice.reducer;

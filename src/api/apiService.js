@@ -48,14 +48,20 @@ export const signup = async (email, password) => {
 
 // Fonction pour récupérer le profil utilisateur
 export const getUserProfile = async () => {
-  try {
-    const response = await apiService.post("/user/profile");
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error.message;
-  }
-};
-
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Token non trouvé, veuillez vous connecter");
+      }
+  
+      const response = await apiService.post("/user/profile", { token: token });
+  
+      return response.data;
+    } catch (error) {
+        throw error.response?.data || error.message;
+    }
+  };
+    
 // Fonction pour mettre à jour le profil utilisateur
 export const updateUserProfile = async (profileData) => {
   try {

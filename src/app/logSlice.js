@@ -16,9 +16,10 @@ const logSlice = createSlice({
       localStorage.setItem("token", action.payload.token);
     },
     logoutAction: (state) => {
-      // Déconnexion, retire les infos du localStorage
+      // Déconnexion réussie, on met à jour l'état du token
       state.token = null;
 
+      // Retirer du localStorage
       localStorage.removeItem("token");
     },
   },
