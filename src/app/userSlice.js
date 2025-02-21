@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  firstName: "Tony", // Valeur par défaut (à remplacer avec des données dynamiques après connexion)
-  lastName: "Jarvis", // Valeur par défaut (à remplacer avec des données dynamiques après connexion)
-  // Récupérer isAuthenticated depuis le localStorage (sinon false par défaut)
-  isAuthenticated: JSON.parse(localStorage.getItem("isAuthenticated")) || false, // Pour gérer l'état de connexion
+  firstName: "", // Valeur vide, à remplir après la connexion
+  lastName: "",  // Idem
+  token: localStorage.getItem("token") || null, // Si le token est dans localStorage, il est récupéré ici
+  isAuthenticated: JSON.parse(localStorage.getItem("isAuthenticated")) || false, // État de l'authentification
 };
 
 const userSlice = createSlice({
@@ -12,16 +12,36 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
+      // Mise à jour des informations utilisateur après la connexion
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
-    },
-    login: (state) => {
+      state.token = action.payload.token;
       state.isAuthenticated = true;
-      localStorage.setItem("isAuthenticated", JSON.stringify(true)); // Sauvegarde dans localStorage
+
+      // Sauvegarde dans le localStorage
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("isAuthenticated", JSON.stringify(true));
+    },
+    login: (state, action) => {
+      // Connexion réussie, on met à jour l'état avec le token et les infos de l'utilisateur
+      state.isAuthenticated = true;
+      state.token = action.payload.token;
+      state.firstName = action.payload.firstName; // Si tu as un autre moyen d'obtenir le prénom
+      state.lastName = action.payload.lastName; // Idem pour le nom
+
+      // Sauvegarde dans le localStorage
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("isAuthenticated", JSON.stringify(true));
     },
     logout: (state) => {
+      // Déconnexion, on réinitialise l'état et retire les infos du localStorage
       state.isAuthenticated = false;
-      localStorage.setItem("isAuthenticated", JSON.stringify(false)); // Mise à jour de localStorage
+      state.firstName = "";
+      state.lastName = "";
+      state.token = null;
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("isAuthenticated");
     },
   },
 });
