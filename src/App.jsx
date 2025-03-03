@@ -16,10 +16,10 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/signin" element={<Signin />} />
+          <Route path="/login" element={<Signin />} />
           <Route path="/*" element={<Error />} />
 
-          <Route path="/dashboard" element={
+          <Route path="/profile" element={
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>

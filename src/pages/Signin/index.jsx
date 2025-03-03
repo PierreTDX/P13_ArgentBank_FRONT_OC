@@ -27,7 +27,7 @@ function Signin() {
             dispatch(loginAction({ token: token }));
 
             // Redirection vers le dashboard
-            navigate("/dashboard");
+            navigate("/profile");
         } catch (err) {
             setError(err.message || "Erreur de connexion");
         }
