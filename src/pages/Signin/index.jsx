@@ -1,36 +1,17 @@
-import "./signin.scss";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { loginAction } from "../../app/logSlice"; // Action Redux
-import { login } from "./../../api/apiService"; // Fonction API
+import "./signin.scss"
+import { useState } from "react"
+import { useLogin } from "../../hooks/useLogin"
 
 function Signin() {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setError(""); // Reset des erreurs avant la tentative
+    const { handleLogin, error } = useLogin() // Utilisation du hook personnalisé
 
-        try {
-            // Appel API pour la connexion
-            const data = await login(email, password);
+    const handleSubmit = async (e) => {
+        e.preventDefault()
 
-            // Récupération du token depuis la réponse
-            const token = data.body.token; // récupère le token de la réponse
-
-            // Dispatch de l'action login avec le token
-            dispatch(loginAction({ token: token }));
-
-            // Redirection vers le dashboard
-            navigate("/profile");
-        } catch (err) {
-            setError(err.message || "Connection API error");
-        }
+        handleLogin(email, password)
     };
 
     return (
@@ -39,7 +20,7 @@ function Signin() {
                 <section className="sign-in-content">
                     <i className="fa fa-user-circle sign-in-icon"></i>
                     <h1>Sign In</h1>
-                    <form onSubmit={handleLogin}>
+                    <form onSubmit={handleSubmit}>
                         <div className="input-wrapper">
                             <label htmlFor="username">Username</label>
                             <input
@@ -72,7 +53,7 @@ function Signin() {
                 <p>Password : password123 / password234</p>
             </main>
         </div>
-    );
+    )
 }
 
-export default Signin;
+export default Signin
