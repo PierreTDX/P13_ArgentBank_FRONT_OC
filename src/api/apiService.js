@@ -51,7 +51,7 @@ export const getUserProfile = async () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error("Token non trouvé, veuillez vous connecter");
+        throw new Error("Token not found, please log in");
       }
   
       const response = await apiService.post("/user/profile", { token: token });
@@ -67,7 +67,7 @@ export const updateUserProfile = async (profileData) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        throw new Error("Token non trouvé, veuillez vous connecter");
+        throw new Error("Token not found, please log in");
       }
   
       const response = await apiService.put("/user/profile", profileData, {

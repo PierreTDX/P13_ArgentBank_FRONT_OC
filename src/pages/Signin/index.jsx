@@ -29,7 +29,7 @@ function Signin() {
             // Redirection vers le dashboard
             navigate("/profile");
         } catch (err) {
-            setError(err.message || "Erreur de connexion");
+            setError(err.message || "Connection API error");
         }
     };
 

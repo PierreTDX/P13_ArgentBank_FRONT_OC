@@ -5,7 +5,7 @@ function Loader() {
     return (
         <>
             <div className='loader'>
-                <p>Chargement</p>
+                <p>Loading</p>
             </div>
         </>
     )

@@ -7,8 +7,8 @@ function Error() {
         <>
             <div className='bodyPage'>
                 <main className="main bg-dark error">
-                    <h1>Cette page n&apos;existe pas</h1>
-                    <NavLink to={'/'}>retour accueil</NavLink >
+                    <h1>This page does not exist</h1>
+                    <NavLink to={'/'}>return home</NavLink >
                 </main>
             </div>
         </>

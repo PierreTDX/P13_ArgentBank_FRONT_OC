@@ -1,29 +1,21 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../../app/userSlice";
-import { selectUser } from "../../app/selectors";
-import { getUserProfile, updateUserProfile } from "../../api/apiService";
-import "./editNameForm.scss";
+import { useState } from "react"
+import { useSelector } from "react-redux"
+import { selectUser } from "../../app/selectors"
+import { useUserProfile } from "../../hooks/useUserProfile"
+import { useUpdateUserProfile } from "../../hooks/useUpdateUserProfile"
+import "./editNameForm.scss"
 
 function EditNameForm() {
-    const dispatch = useDispatch();
-    const { firstName, lastName } = useSelector(selectUser);
-    const [isEditing, setIsEditing] = useState(false);
+    const { firstName, lastName } = useSelector(selectUser)
+    const [isEditing, setIsEditing] = useState(false)
 
-    useEffect(() => {
-        const fetchUserProfile = async () => {
-            try {
-                const userProfile = await getUserProfile();
-                dispatch(setUser(userProfile.body));
-            } catch (error) {
-                console.error("Erreur lors de la récupération du profil utilisateur:", error);
-            }
-        };
+    // Utilisation du hook pour récupérer le profil utilisateur
+    useUserProfile()
 
-        fetchUserProfile();
-    }, [dispatch]);
+    // Utilisation du hook pour la mise à jour du profil
+    const { handleUpdate } = useUpdateUserProfile()
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         const formData = new FormData(e.target);
@@ -31,14 +23,9 @@ function EditNameForm() {
             firstName: formData.get("firstName"),
             lastName: formData.get("lastName"),
         };
+        setIsEditing(false);
 
-        try {
-            const updatedUser = await updateUserProfile(updatedData);
-            dispatch(setUser(updatedUser.body));
-            setIsEditing(false);
-        } catch (error) {
-            console.error("Erreur lors de la mise à jour du profil utilisateur:", error);
-        }
+        handleUpdate(updatedData); // Appel de la fonction du hook pour mettre à jour
     };
 
     return (
@@ -96,4 +83,4 @@ function EditNameForm() {
     );
 }
 
-export default EditNameForm;
+export default EditNameForm
