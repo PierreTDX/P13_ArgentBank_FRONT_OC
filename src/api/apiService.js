@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3001/api/v1"; // Remplacer par l'URL réelle de l'API
+const API_BASE_URL = "https://p13-argentbank-back-oc.vercel.app/api/v1"; // Remplacer par l'URL réelle de l'API
+// const API_BASE_URL = "http://localhost:3001/api/v1"; // Remplacer par l'URL réelle de l'API
 
 // Création d'une instance Axios
 const apiService = axios.create({
@@ -82,10 +83,5 @@ export const updateUserProfile = async (profileData) => {
       throw error.response?.data || error.message;
     }
   };
-
-// Fonction pour se déconnecter
-export const logout = () => {
-  localStorage.removeItem("token");
-};
 
 export default apiService;
