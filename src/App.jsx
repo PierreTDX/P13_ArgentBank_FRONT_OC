@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard"
 import Error from "./components/404"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
+import Logout from './components/Logout'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Signin />} />
           <Route path="/*" element={<Error />} />
+          <Route path="/logout" element={<Logout />} />
 
           <Route path="/profile" element={
             <ProtectedRoute>
