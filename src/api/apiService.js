@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3001/api/v1"; // Remplace par l'URL réelle de ton API
+const API_BASE_URL = "http://localhost:3001/api/v1"; // Remplacer par l'URL réelle de l'API
 
 // Création d'une instance Axios
 const apiService = axios.create({

@@ -39,7 +39,7 @@ function EditNameForm() {
                 </div>
             ) : (
                 <form className="editNameForm" onSubmit={handleSubmit}>
-                    <div className="input-group">
+                    <div className="input-group column">
                         <div className="input-wrapper">
                             <label className="sr-only" htmlFor="firstname">
                                 Firstname
@@ -50,6 +50,7 @@ function EditNameForm() {
                                 id="firstname"
                                 name="firstName"
                                 defaultValue={firstName}
+                                placeholder="firstname"
                             />
                         </div>
                         <div className="input-wrapper">
@@ -62,6 +63,7 @@ function EditNameForm() {
                                 id="lastname"
                                 name="lastName"
                                 defaultValue={lastName}
+                                placeholder="lastname"
                             />
                         </div>
                     </div>

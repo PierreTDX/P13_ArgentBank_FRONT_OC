@@ -1,6 +1,6 @@
 import "./header.scss"
 import Logo from "./../../assets/img/argentBankLogo.png"
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { logoutAction } from "../../app/logSlice" // Import de l'action logout
 import { selectToken, selectFirstName } from "./../../app/selectors" // Import des sélecteurs
@@ -8,21 +8,18 @@ import { useUserProfile } from "../../hooks/useUserProfile"
 
 function Header() {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
 
   // Utilisation des sélecteurs pour récupérer les infos utilisateur depuis Redux
   const firstName = useSelector(selectFirstName);
   const isAuthenticated = useSelector(selectToken)
 
   // Utilisation du hook pour récupérer le profil utilisateur
-  useUserProfile(isAuthenticated)
+  useUserProfile()
 
   const handleLogout = () => {
-    dispatch(logoutAction())  // Déconnecte l'utilisateur
-
     setTimeout(() => {
-      navigate("/")  // Redirige vers la page d'accueil après un court délai
-    }, 0)  // 0ms suffit pour éviter que Redux ne mette à jour l'état trop vite
+      dispatch(logoutAction())
+    }, 1)  // 1ms suffit pour éviter que Redux ne mette à jour l'état trop vite afin de NavLink to={`/`} en premier
   }
 
   return (

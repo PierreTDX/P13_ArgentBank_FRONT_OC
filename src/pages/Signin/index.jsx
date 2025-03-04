@@ -50,7 +50,7 @@ function Signin() {
                     </form>
                 </section>
                 <p>Username : tony@stark.com / steve@rogers.com</p>
-                <p>Password : password123 / password234</p>
+                <p>Password : password123 / password456</p>
             </main>
         </div>
     )
