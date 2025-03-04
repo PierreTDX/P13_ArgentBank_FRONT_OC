@@ -1,18 +1,34 @@
 import "./signin.scss"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useLogin } from "../../hooks/useLogin"
 
 function Signin() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [rememberMe, setRememberMe] = useState(false) // État pour la checkbox
 
     const { handleLogin, error } = useLogin() // Utilisation du hook personnalisé
+
+    // Si l'email est dans le localStorage, on le met dans le champ "email"
+    useEffect(() => {
+        const savedEmail = localStorage.getItem("email")
+        if (savedEmail) {
+            setEmail(savedEmail)
+            setRememberMe(true) // On coche la case "Remember me" si l'email est trouvé
+        }
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         handleLogin(email, password)
-    };
+
+        if (rememberMe) {
+            localStorage.setItem("email", email)
+        } else {
+            localStorage.removeItem("email")
+        }
+    }
 
     return (
         <div className="bodyPage">
@@ -40,7 +56,7 @@ function Signin() {
                             />
                         </div>
                         <div className="input-remember">
-                            <input type="checkbox" id="remember-me" />
+                            <input type="checkbox" id="remember-me" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
                             <label htmlFor="remember-me">Remember me</label>
                         </div>
                         {error && <p className="error-message">{error}</p>}
