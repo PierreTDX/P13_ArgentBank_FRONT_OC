@@ -9,6 +9,7 @@ function AccountCard({ accounts }) {
 
     return (
         <>
+            <h2 className="sr-only">Accounts</h2>
             {accounts.map((account, index) => (
                 <section className="account" key={index}>
                     <div className="account-content-wrapper">

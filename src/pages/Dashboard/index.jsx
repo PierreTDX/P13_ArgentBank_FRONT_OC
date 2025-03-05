@@ -17,7 +17,6 @@ function Dashboard() {
                         <h1>Welcome back</h1>
                         <EditNameForm />
                     </div>
-                    <h2 className="sr-only">Accounts</h2>
                     <AcountCard accounts={userAccounts} />
                 </main>
             </div>
