@@ -1,17 +1,18 @@
 import "./signup.scss"
-import { useState } from "react"
 import { useSignUp } from "../../hooks/useSignUp"
 
 function Signup() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-
     const { handleSignUp, error, successMessage } = useSignUp() // Utilisation du hook personnalisé
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+
+        // Récupérer les valeurs directement du formulaire
+        const form = e.target
+        const email = form.email.value
+        const password = form.password.value
+        const firstName = form.firstname.value
+        const lastName = form.lastname.value
 
         handleSignUp(email, password, firstName, lastName)
     }
@@ -28,8 +29,7 @@ function Signup() {
                             <input
                                 type="text"
                                 id="firstname"
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)}
+                                name="firstname"
                                 required
                                 autoComplete="off"
                             />
@@ -39,8 +39,7 @@ function Signup() {
                             <input
                                 type="text"
                                 id="lastname"
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)}
+                                name="lastname"
                                 required
                                 autoComplete="off"
                             />
@@ -50,8 +49,7 @@ function Signup() {
                             <input
                                 type="email"
                                 id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                name="email"
                                 required
                                 autoComplete="off"
                             />
@@ -61,8 +59,7 @@ function Signup() {
                             <input
                                 type="password"
                                 id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                name="password"
                                 required
                                 autoComplete="new-password"
                             />

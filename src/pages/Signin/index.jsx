@@ -1,30 +1,25 @@
 import "./signin.scss"
-import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useLogin } from "../../hooks/useLogin"
 
 function Signin() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [rememberMe, setRememberMe] = useState(false) // État pour la checkbox
     const navigate = useNavigate()
-
     const { handleLogin, error } = useLogin() // Utilisation du hook personnalisé
-
-    // Si l'email est dans le localStorage, on le met dans le champ "email"
-    useEffect(() => {
-        const savedEmail = localStorage.getItem("email")
-        if (savedEmail) {
-            setEmail(savedEmail)
-            setRememberMe(true) // On coche la case "Remember me" si l'email est trouvé
-        }
-    }, []);
+    const savedEmail = localStorage.getItem("email")
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        // Récupérer les valeurs directement du formulaire
+        const form = e.target
+        const email = form.email.value
+        const password = form.password.value
+        const rememberMe = form.rememberMe.checked
+
+        // Appel de la fonction handleLogin
         handleLogin(email, password)
 
+        // Sauvegarder l'email dans le localStorage si "Remember me" est coché
         if (rememberMe) {
             localStorage.setItem("email", email)
         } else {
@@ -44,8 +39,9 @@ function Signin() {
                             <input
                                 type="email"
                                 id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                name="email"
+                                defaultValue={savedEmail || ""}
+                                required
                             />
                         </div>
                         <div className="input-wrapper">
@@ -53,12 +49,17 @@ function Signin() {
                             <input
                                 type="password"
                                 id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                name="password"
+                                required
                             />
                         </div>
                         <div className="input-remember">
-                            <input type="checkbox" id="remember-me" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+                            <input
+                                type="checkbox"
+                                id="remember-me"
+                                name="rememberMe"
+                                defaultChecked={savedEmail ? true : false} // Si l'email est dans le localStorage, cocher la case
+                            />
                             <label htmlFor="remember-me">Remember me</label>
                         </div>
                         {error && <p className="error-message">{error}</p>}
