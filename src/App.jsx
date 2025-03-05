@@ -2,6 +2,7 @@ import './utils/style/global.scss'
 import Home from "./pages/Home"
 import Signin from "./pages/Signin"
 import Dashboard from "./pages/Dashboard"
+import Signup from "./pages/Signup"
 import Error from "./components/404"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
@@ -20,6 +21,8 @@ function App() {
           <Route path="/login" element={<Signin />} />
           <Route path="/*" element={<Error />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/signup" element={<Signup />} />
+
 
           <Route path="/profile" element={
             <ProtectedRoute>

@@ -38,9 +38,9 @@ export const login = async (email, password) => {
 };
 
 // Fonction pour s'inscrire
-export const signup = async (email, password) => {
+export const signup = async (email, password, firstName, lastName) => {
   try {
-    const response = await apiService.post("/user/signup", { email, password });
+    const response = await apiService.post("/user/signup", { email, password, firstName, lastName });
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

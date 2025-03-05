@@ -1,11 +1,13 @@
 import "./signin.scss"
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { useLogin } from "../../hooks/useLogin"
 
 function Signin() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [rememberMe, setRememberMe] = useState(false) // État pour la checkbox
+    const navigate = useNavigate()
 
     const { handleLogin, error } = useLogin() // Utilisation du hook personnalisé
 
@@ -38,10 +40,10 @@ function Signin() {
                     <h1>Sign In</h1>
                     <form onSubmit={handleSubmit}>
                         <div className="input-wrapper">
-                            <label htmlFor="username">Username</label>
+                            <label htmlFor="email">Email</label>
                             <input
-                                type="text"
-                                id="username"
+                                type="email"
+                                id="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
@@ -67,6 +69,12 @@ function Signin() {
                 </section>
                 <p>Username : tony@stark.com / steve@rogers.com</p>
                 <p>Password : password123 / password456</p>
+                <section className="sign-in-content">
+                    <h1>New customer</h1>
+                    <button onClick={() => navigate("/signup")} className="sign-in-button">
+                        Sign Up
+                    </button>
+                </section>
             </main>
         </div>
     )
