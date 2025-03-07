@@ -68,15 +68,14 @@ function Signin() {
                         </button>
                     </form>
                 </section>
-                <p>Username : tony@stark.com / steve@rogers.com</p>
+                <p>Email : tony@stark.com / steve@rogers.com</p>
                 <p>Password : password123 / password456</p>
-                <section className="sign-in-content">
+                <section className="sign-in-content sign-up-content">
                     <h1>New customer</h1>
                     <button onClick={() => navigate("/signup")} className="sign-in-button">
                         Sign Up
                     </button>
                 </section>
-                <br />
             </main>
         </div>
     )
