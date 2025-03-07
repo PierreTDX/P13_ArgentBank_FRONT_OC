@@ -76,6 +76,7 @@ function Signin() {
                         Sign Up
                     </button>
                 </section>
+                <br />
             </main>
         </div>
     )

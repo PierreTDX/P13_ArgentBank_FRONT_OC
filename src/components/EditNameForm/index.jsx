@@ -51,6 +51,7 @@ function EditNameForm() {
                                 name="firstName"
                                 defaultValue={firstName}
                                 placeholder="firstname"
+                                required
                             />
                         </div>
                         <div className="input-wrapper">
@@ -64,6 +65,7 @@ function EditNameForm() {
                                 name="lastName"
                                 defaultValue={lastName}
                                 placeholder="lastname"
+                                required
                             />
                         </div>
                     </div>
