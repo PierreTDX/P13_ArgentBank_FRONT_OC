@@ -1,13 +1,14 @@
 import './dashboard.scss'
 import EditNameForm from '../../components/EditNameForm'
-import AcountCard from '../../components/AcountCard'
-import acountData from '../../data/account-data.json'
+import AccountCard from '../../components/AccountCard'
+import accountData from '../../data/account-data.json'
 import { selectUser } from '../../app/selectors'
 import { useSelector } from "react-redux"
 
 function Dashboard() {
     const { id } = useSelector(selectUser)
-    const userAccounts = acountData.find(user => user.userId === id)?.account || []
+    // Filtrer tous les comptes où l'`id` est présent dans le tableau `userId`
+    const userAccounts = accountData.filter(account => account.userId.includes(id)) || []
 
     return (
         <>
@@ -17,7 +18,7 @@ function Dashboard() {
                         <h1>Welcome back</h1>
                         <EditNameForm />
                     </div>
-                    <AcountCard accounts={userAccounts} />
+                    <AccountCard accounts={userAccounts} />
                 </main>
             </div>
         </>

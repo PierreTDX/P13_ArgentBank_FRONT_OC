@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import "./acountCard.scss"
+import "./accountCard.scss"
 
 function AccountCard({ accounts }) {
 
