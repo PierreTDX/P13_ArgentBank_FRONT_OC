@@ -269,30 +269,30 @@ paths:
               startDate:
                 type: string
                 format: date
-                description: Filter transactions starting from this date (`YYYY-MM-DD`).
+                description: Filter transactions starting from this date (`YYYY-MM-DD`). If empty default value = date of the current day
                 example: "2024-01-01"
               endDate:
                 type: string
                 format: date
-                description: Filter transactions up to this date (`YYYY-MM-DD`).
+                description: Filter transactions up to this date (`YYYY-MM-DD`). If empty default value = date of the current day minus 31 days
                 example: "2024-01-31"
               description:
                 type: string
-                description: Search transactions containing this keyword in their description.
+                description: Search transactions containing this keyword in their description. If empty search for all
                 example: "Bakery"
               minAmount:
                 type: number
                 format: float
-                description: Minimum transaction amount.
+                description: Minimum transaction amount. If empty search for all
                 example: 10.5
               maxAmount:
                 type: number
                 format: float
-                description: Maximum transaction amount.
+                description: Maximum transaction amount. If empty search for all
                 example: 500.75
               transactionType:
                 type: string
-                description: Filter by transaction type ("Electronic", "Cash", ... see enum).
+                description: Filter by transaction type ("Electronic", "Cash", ... see enum). If empty search for all
                 enum:
                 - "Electronic"
                 - "Cash"
@@ -301,7 +301,7 @@ paths:
                 example: "Electronic"
               category:
                 type: string
-                description: filter by category ("Food", "Travel", ... see enum).
+                description: filter by category ("Food", "Travel", ... see enum). If empty search for all
                 enum:
                 - "Food"
                 - "Travel"
@@ -314,7 +314,7 @@ paths:
                 example: "Food"
               notes:
                 type: string
-                description: Whether to filter transactions that include user notes.
+                description: Whether to filter transactions that include user notes. If empty search for all
                 enum: ["true", "false", "all"]
                 default: "all"
                 example: "all"
@@ -402,16 +402,16 @@ paths:
                     - "accountId is required and must be a valid string."
                     - "limit must be a positive integer greater than 0. or empty (means 30 per default)"
                     - "page must be a positive integer starting from 1. or empty (means 1 per default)"
-                    - "startDate must follow the format YYYY-MM-DD. or empty (means the most newest per default)"
-                    - "endDate must follow the format YYYY-MM-DD. or empty (means the most oldest per default)"
+                    - "startDate must follow the format YYYY-MM-DD. or empty (means date from the current day per default)"
+                    - "endDate must follow the format YYYY-MM-DD. or empty (means date from the current day minus 31 days per default)"
                     - "startDate cannot be after endDate."
                     - "startDate cannot be in futur."
                     - "minAmount must be a positive number. or empty"
                     - "maxAmount must be a positive number. or empty"
                     - "minAmount cannot be greater than maxAmount."
-                    - "transactionType must be one of the predefined values. or empty"
-                    - "category must be one of the predefined values. or empty"
-                    - "notes must be 'true', 'false', or 'all'."
+                    - "transactionType must be one of the predefined values. or empty for all"
+                    - "category must be one of the predefined values. or empty for all"
+                    - "notes must be 'true', 'false', or 'all'. or empty for all"
         '401':
             description: Unauthorized - Missing or invalid authentication token.
             examples:
@@ -479,6 +479,102 @@ paths:
                 message: "An unexpected error occurred. Please try again later."  
 
   /user/account/transaction:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Account Module (not implemented)
+      summary: Fetch Transaction API
+      description: |
+        API to fetch a transaction.
+
+        - This API allows the user to fecth a transaction. The transaction is identified by its `id` in the request body, while the `accountId` is validated using the JWT token. 
+
+        Please ensure that the transaction ID exists and belongs to the authenticated user to successfully fecth the transaction.
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Transaction ID to fetch transaction
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The ID of the transaction to be fetched
+                required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success fetching transaction
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+          examples:
+            application/json:
+              status: 200
+              message: "Success fetching transaction"
+              body:
+                transaction:
+                  id: "objectId0020"
+                  date: "2020-06-20T14:30:00Z"
+                  description: "Golden Sun Bakery"
+                  amount: 5
+                  balance: 2082.79
+                  transactionType: "Electronic"
+                  category: "Food"
+                  notes: "text note"
+                  userIdOfNote: "67c7352eb891884d709ab384"
+        '400':
+          description: Invalid request parameters.
+          examples:
+            application/json:
+              status: 400
+              message: "Invalid fields detected in request."
+              details:
+                errors:
+                  - "id is required and must be a valid transaction ID."
+        '401':
+            description: Unauthorized - Missing or invalid authentication token.
+            examples:
+              application/json:
+                status: 401
+                message: "Authentication required. Please provide a valid Bearer token."
+        '403':
+            description: Forbidden - User does not have access to this transaction.
+            examples:
+              application/json:
+                status: 403
+                message: "You do not have permission to fetch this transaction."
+        '404':
+            description: Transaction not found.
+            examples:
+              application/json:
+                status: 404
+                message: "Transaction not found with the given ID."
+                details:
+                  reasons:
+                    - "Transaction ID does not exist."
+                    - "The transaction does not belong to the authenticated user."
+        '422':
+            description: Unprocessable Entity - Validation errors in request parameters.
+            examples:
+              application/json:
+                status: 422
+                message: "Validation error."
+                errors:
+                  - field: "id"
+                    message: "Invalid transaction ID format."
+        '500':
+            description: Internal Server Error - Something went wrong on the server.
+            examples:
+              application/json:
+                status: 500
+                message: "An unexpected error occurred. Please try again later."
     patch:
       security:
         - Bearer: []
