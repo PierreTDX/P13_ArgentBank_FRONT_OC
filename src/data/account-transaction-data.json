@@ -1,0 +1,74 @@
+[
+	{
+	  "id": "objectId0020",
+      "date": "2020-06-20T14:30:00Z",
+      "description": "Golden Sun Bakery",
+      "amout": 5,
+      "balance": 2082.79,
+      "transactionType": "Electronic",
+      "category": "Food",
+      "notes": "",
+      "accountId": "objectId0001",
+      "userIdOfNote": "67c7352eb891884d709ab384"
+	},
+	{
+        "id": "objectId0021",
+        "date": "2020-06-20T14:00:00Z",
+        "description": "Golden Sun Bakery",
+        "amout": 10,
+        "balance": 2087.79,
+        "transactionType": "Electronic",
+        "category": "Food",
+        "notes": "",
+        "accountId": "objectId0001",
+        "userIdOfNote": "67c7352eb891884d709ab384"
+      },
+      {
+        "id": "objectId0022",
+        "date": "2020-06-20T13:30:00Z",
+        "description": "Golden Sun Bakery",
+        "amout": 20,
+        "balance": 2097.79,
+        "transactionType": "Electronic",
+        "category": "Food",
+        "notes": "",
+        "accountId": "objectId0001",
+        "userIdOfNote": "67c7352eb891884d709ab384"
+      },
+      {
+        "id": "objectId0023",
+        "date": "2020-06-20T13:00:00Z",
+        "description": "Golden Sun Bakery",
+        "amout": 30,
+        "balance": 2117.79,
+        "transactionType": "Electronic",
+        "category": "Food",
+        "notes": "",
+        "accountId": "objectId0001",
+        "userIdOfNote": "67c7352eb891884d709ab384"
+      },
+      {
+        "id": "objectId0024",
+        "date": "2020-06-20T12:30:00Z",
+        "description": "Golden Sun Bakery",
+        "amout": 40,
+        "balance": 2147.79,
+        "transactionType": "Electronic",
+        "category": "Food",
+        "notes": "",
+        "accountId": "objectId0001",
+        "userIdOfNote": "67c7352eb891884d709ab384"
+      },
+      {
+        "id": "objectId0025",
+        "date": "2020-06-20T12:00:00Z",
+        "description": "Golden Sun Bakery",
+        "amout": 50,
+        "balance": 2187.79,
+        "transactionType": "Electronic",
+        "category": "Food",
+        "notes": "",
+        "accountId": "objectId0001",
+        "userIdOfNote": "67c7352eb891884d709ab384"
+      }
+]
