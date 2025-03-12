@@ -2,7 +2,8 @@
 
 ![Logo ArgentBank](./src/assets/img/argentBankLogo.png)
 
-Création d'une application permettant aux clients de se connecter et de gérer leurs comptes et leur profil.
+Création d'une application permettant aux clients de se connecter et de gérer leurs comptes et leur profil.  
+\+ proposition EndPoints pour la phase 2 de l'API [ICI](#phase-2--transactions)
 
   
 > [!NOTE]  
