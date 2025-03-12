@@ -269,12 +269,14 @@ paths:
               startDate:
                 type: string
                 format: date
-                description: Filter transactions starting from this date (`YYYY-MM-DD`). If empty default value = date of the current day
+                description: Filter transactions starting from this date (`YYYY-MM-DD`). If empty default value = the date of the newest per default
                 example: "2024-01-01"
               endDate:
                 type: string
                 format: date
-                description: Filter transactions up to this date (`YYYY-MM-DD`). If empty default value = date of the current day minus 31 days
+                description:  | 
+                  Filter transactions up to this date (`YYYY-MM-DD`). If empty default value = the date of the most oldest per default.
+                  `For the Front-end` : to fectch all last for a month dot forget => `value = the date of the current day minus 31 days`
                 example: "2024-01-31"
               description:
                 type: string
@@ -402,8 +404,8 @@ paths:
                     - "accountId is required and must be a valid string."
                     - "limit must be a positive integer greater than 0. or empty (means 30 per default)"
                     - "page must be a positive integer starting from 1. or empty (means 1 per default)"
-                    - "startDate must follow the format YYYY-MM-DD. or empty (means date from the current day per default)"
-                    - "endDate must follow the format YYYY-MM-DD. or empty (means date from the current day minus 31 days per default)"
+                    - "startDate must follow the format YYYY-MM-DD. or empty (means the most newest per default)"
+                    - "endDate must follow the format YYYY-MM-DD. or empty (means the most oldest per default)"
                     - "startDate cannot be after endDate."
                     - "startDate cannot be in futur."
                     - "minAmount must be a positive number. or empty"
