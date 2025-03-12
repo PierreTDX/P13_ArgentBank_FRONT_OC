@@ -1,9 +1,9 @@
 import "./signin.scss"
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 import { useLogin } from "../../hooks/useLogin"
 
 function Signin() {
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const { handleLogin, error } = useLogin() // Utilisation du hook personnalisé
     const savedEmail = localStorage.getItem("email")
 

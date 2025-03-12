@@ -1,0 +1,870 @@
+swagger: '2.0'
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: '1.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /user/login:
+    post:
+      tags:
+        - User Module
+      summary: Login
+      description: API for Login
+      parameters:
+        - in: body
+          name: body
+          description: Login Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Login'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Login Successfully
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/signup:
+    post:
+      tags:
+        - User Module
+      summary: Signup
+      description: API for Signup
+      parameters:
+        - in: body
+          name: body
+          description: Signup Payload
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Signup Successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/profile:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for fetching a user profile
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for updating a user profile
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Update user profile attributes
+          required: true
+          schema:
+            $ref: '#/definitions/UserProfile'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+
+# Pahse2
+  /user/accounts:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Account Module (not implemented)
+      summary: Retrieve User Accounts or Single Account API
+      description: |
+        API to retrieve user accounts.
+
+        If the `id` of the account is provided in the request body, the API will fetch the specific account associated with the authenticated user (validated via the `userId` in the JWT). 
+        If the `id` is not provided, the API will return all accounts that belong to the authenticated user.
+
+        - The user making the request must be authenticated, and the `userId` extracted from the JWT token must match one of the `usersId` associated with the account(s). 
+        - The `userId` is validated via the JWT, and the request will only be successful if the authenticated user has permission to access the requested account(s).
+
+        If the account ID does not exist or does not belong to the authenticated user, a corresponding error message will be returned.
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Account ID to fetch a specific user account (optional). If not provided, all accounts for the authenticated user will be retrieved.
+          required: false
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The ID of the account to retrieve. If not provided, all accounts will be fetched.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User account(s) retrieved successfully
+          schema:
+            $ref: '#/definitions/UserAccountsResponse'
+          examples:
+            application/json:
+              status: 200
+              message: "Success fetching user account(s)"
+              body:
+                accounts:
+                  - id: "objectId0001"
+                    accountNumber: "x8349"
+                    title: "Argent Bank Checking"
+                    amount: 2082.79
+                    description: "Available Balance"
+                  - id: "objectId0002"
+                    accountNumber: "x6712"
+                    title: "Argent Bank Savings"
+                    amount: 10928.42
+                    description: "Available Balance"
+                  - id: "objectId0003"
+                    accountNumber: "x8349"
+                    title: "Argent Bank Credit Card"
+                    amount: 184.30
+                    description: "Current Balance"
+        '400':
+          description: Invalid request parameters.
+          examples:
+            application/json:
+              status: 400
+              message: "Invalid fields detected in request."
+              details:
+                errors:
+                  - "id must be a valid account ID if provided."
+                  - "userId must match the authenticated user's ID."
+        '401':
+          description: Unauthorized - Missing or invalid authentication token.
+          examples:
+            application/json:
+              status: 401
+              message: "Authentication required. Please provide a valid Bearer token."
+        '403':
+          description: Forbidden - User does not have access to this account.
+          examples:
+            application/json:
+              status: 403
+              message: "You do not have permission to access this account."
+        '404':
+          description: Account(s) not found.
+          examples:
+            application/json:
+              status: 404
+              message: "Account not found with the given ID or no accounts found for the authenticated user."
+              details:
+                reasons:
+                  - "Account ID does not exist."
+                  - "Account does not belong to the authenticated user."
+                  - "No accounts found for the authenticated user."
+        '500':
+          description: Internal Server Error - Something went wrong on the server.
+          examples:
+            application/json:
+              status: 500
+              message: "An unexpected error occurred. Please try again later."
+  /user/account/transactions:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Account Module (not implemented)
+      summary: Fetch and filter account transactions with pagination and sorting options API
+      description: |
+        API for fetching account transactions, with a default return of **30 most recent transactions**, sorted by various elements.
+
+        - **The API retrieves the most recent transaction** of an account (with `accountId` allowed by JWT).
+        - Transactions are **sorted from newest to oldest** by default, but clients can specify different sorting criteria if needed.
+        - Clients can **paginate results** using:
+          - `limit`: Number of transactions per page (default: **30**).
+          - `page`: Page number (starts from **1**, default: **1**).
+        - Clients can **filter transactions** using:
+          - `startDate` and `endDate` to define a date range.
+          - `description` to search for a specific keyword in transaction descriptions.
+          - `minAmount` and `maxAmount` to filter by transaction amounts.
+          - `transactionType` and `category` to refine results by type or category.
+          - `notes` to filter transactions:
+            - `true`: Only transactions with user notes.
+            - `false`: Only transactions without user notes.
+            - `all` (default): No filtering on notes.
+        - Default behavior:
+          - If no parameters are provided, the API returns **30 most recent transactions** (`limit=30`, `page=1`).
+          - Sorting options allow flexibility in viewing transactions based on different attributes (e.g., amount, category).
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Account ID to fetch transactions
+          required: true
+          schema:
+            type: object
+            properties:
+              accountId:
+                type: string
+                description: The account ID to fetch transactions for.
+                required: true
+              limit:
+                type: integer
+                description: Number of transactions to return per request. If empty default value = 30
+                default: 30
+                minimum: 1
+                example: 30
+              page:
+                type: integer
+                description: Page number (starts from 1). If empty default value = 1
+                default: 1
+                minimum: 1
+                example: 2
+              startDate:
+                type: string
+                format: date
+                description: Filter transactions starting from this date (`YYYY-MM-DD`).
+                example: "2024-01-01"
+              endDate:
+                type: string
+                format: date
+                description: Filter transactions up to this date (`YYYY-MM-DD`).
+                example: "2024-01-31"
+              description:
+                type: string
+                description: Search transactions containing this keyword in their description.
+                example: "Bakery"
+              minAmount:
+                type: number
+                format: float
+                description: Minimum transaction amount.
+                example: 10.5
+              maxAmount:
+                type: number
+                format: float
+                description: Maximum transaction amount.
+                example: 500.75
+              transactionType:
+                type: string
+                description: Filter by transaction type ("Electronic", "Cash", ... see enum).
+                enum:
+                - "Electronic"
+                - "Cash"
+                - "Transfer"
+                - "Deposit"
+                example: "Electronic"
+              category:
+                type: string
+                description: filter by category ("Food", "Travel", ... see enum).
+                enum:
+                - "Food"
+                - "Travel"
+                - "Entertainment"
+                - "Shopping"
+                - "Utilities"
+                - "Health"
+                - "Education"
+                - "Other"
+                example: "Food"
+              notes:
+                type: string
+                description: Whether to filter transactions that include user notes.
+                enum: ["true", "false", "all"]
+                default: "all"
+                example: "all"
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Account transactions for the 31 days following the most recent transaction retrieved successfully
+          schema:
+            $ref: '#/definitions/UserAccountTransactionsResponse'
+          examples:
+            application/json:
+              status: 200
+              message: "Success fetching account transactions"
+              body:
+                transactions:
+                - id: "objectId0020"
+                  date: "2020-06-20T14:30:00Z"
+                  description: "Golden Sun Bakery"
+                  amount: 5
+                  balance: 2082.79
+                  transactionType: "Electronic"
+                  category: "Food"
+                  notes: ""
+                  userIdOfNote: "67c7352eb891884d709ab384"
+
+                - id: "objectId0021"
+                  date: "2020-06-20T14:00:00Z"
+                  description: "Golden Sun Bakery"
+                  amount: 10
+                  balance: 2087.79
+                  transactionType: "Electronic"
+                  category: "Food"
+                  notes: ""
+                  userIdOfNote: "67c7352eb891884d709ab384"
+
+                - id: "objectId0022"
+                  date: "2020-06-20T13:30:00Z"
+                  description: "Golden Sun Bakery"
+                  amount: 20
+                  balance: 2097.79
+                  transactionType: "Electronic"
+                  category: "Food"
+                  notes: ""
+                  userIdOfNote: "67c7352eb891884d709ab384"
+
+                - id: "objectId0023"
+                  date: "2020-06-20T13:00:00Z"
+                  description: "Golden Sun Bakery"
+                  amount: 30
+                  balance: 2117.79
+                  transactionType: "Electronic"
+                  category: "Food"
+                  notes: ""
+                  userIdOfNote: "67c7352eb891884d709ab384"
+
+                - id: "objectId0024"
+                  date: "2020-06-20T12:30:00Z"
+                  description: "Golden Sun Bakery"
+                  amount: 40
+                  balance: 2147.79
+                  transactionType: "Electronic"
+                  category: "Food"
+                  notes: ""
+                  userIdOfNote: "67c7352eb891884d709ab384"
+
+                - id: "objectId0025"
+                  date: "2020-06-20T12:00:00Z"
+                  description: "Golden Sun Bakery"
+                  amount: 50
+                  balance: 2187.79
+                  transactionType: "Electronic"
+                  category: "Food"
+                  notes: ""
+                  userIdOfNote: "67c7352eb891884d709ab384"
+
+        '400':
+            description: Invalid request parameters.
+            examples:
+              application/json:
+                status: 400
+                message: "Invalid fields detected in request."
+                details:
+                  errors:
+                    - "accountId is required and must be a valid string."
+                    - "limit must be a positive integer greater than 0. or empty (means 30 per default)"
+                    - "page must be a positive integer starting from 1. or empty (means 1 per default)"
+                    - "startDate must follow the format YYYY-MM-DD. or empty (means the most newest per default)"
+                    - "endDate must follow the format YYYY-MM-DD. or empty (means the most oldest per default)"
+                    - "startDate cannot be after endDate."
+                    - "startDate cannot be in futur."
+                    - "minAmount must be a positive number. or empty"
+                    - "maxAmount must be a positive number. or empty"
+                    - "minAmount cannot be greater than maxAmount."
+                    - "transactionType must be one of the predefined values. or empty"
+                    - "category must be one of the predefined values. or empty"
+                    - "notes must be 'true', 'false', or 'all'."
+        '401':
+            description: Unauthorized - Missing or invalid authentication token.
+            examples:
+              application/json:
+                status: 401
+                message: "Authentication required. Please provide a valid Bearer token."
+
+        '403':
+            description: Forbidden - User does not have access to this account.
+            examples:
+              application/json:
+                status: 403
+                message: "You do not have permission to access this account."
+
+        '404':
+            description: No matching transactions found.
+            examples:
+              application/json:
+                status: 404
+                message: "No transactions found matching the given criteria."
+                details:
+                  reasons:
+                    - "Account ID not found."
+                    - "No transactions available for the selected date range."
+                    - "Start date is in the future."
+                    - "End date exceeds the available transaction history."
+                    - "No transactions match the description filter."
+                    - "No transactions found within the specified amount range."
+                    - "No transactions found for the selected transaction type."
+                    - "No transactions found for the selected category."
+                    - "No transactions found with user notes matching the filter."
+
+        '422':
+            description: Unprocessable Entity - Validation errors in request parameters.
+            examples:
+              application/json:
+                status: 422
+                message: "Validation error."
+                errors:
+                  - field: "transactionType"
+                    message: "Invalid value. Allowed values: Electronic, Cash (see enum). or empty" 
+                  - field: "category"
+                    message: "Invalid value. Allowed values: Food, Travel, (see enum). or empty" 
+                  - field: "limit"
+                    message: "Must be a positive integer greater than 0."
+                  - field: "page"
+                    message: "Must be a positive integer starting from 1."
+                  - field: "startDate"
+                    message: "Invalid date format. Must be YYYY-MM-DD. or empty"
+                  - field: "endDate"
+                    message: "Invalid date format. Must be YYYY-MM-DD. or empty"
+                  - field: "startDate"
+                    message: "Cannot be after endDate."
+                  - field: "minAmount"
+                    message: "Must be a positive number. or empty"
+                  - field: "maxAmount"
+                    message: "Must be a positive number. or empty"
+                  - field: "minAmount"
+                    message: "Cannot be greater than maxAmount."
+        '500':
+            description: Internal Server Error - Something went wrong on the server.
+            examples:
+              application/json:
+                status: 500
+                message: "An unexpected error occurred. Please try again later."  
+
+  /user/account/transaction:
+    patch:
+      security:
+        - Bearer: []
+      tags:
+        - Account Module (not implemented)
+      summary: Update Notes for a Transaction API
+      description: |
+        API to update the notes and category of a transaction.
+
+        - This API allows the user to update specific details of a transaction. The transaction is identified by its `id` in the request body, while the `accountId` is validated using the JWT token. 
+        - The user making the update is identified through the `userIdOfNote` field, which is extracted from the JWT token. Only the user associated with the transaction can update the transaction details.
+        - The fields `category` and `notes` can be updated independently. If a field is left empty, no update will be made for that field (i.e., no change will be reflected in the database).
+        - `category` must be one of the predefined allowed values. This field is optional but must be validated if provided.
+        - This API is intended to allow partial updates to transactions, so not all fields are required in the request body.
+
+        Please ensure that the transaction ID exists and belongs to the authenticated user to successfully perform the update.
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Transaction ID to update transaction note
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The ID of the transaction to be updated
+                required: true
+              category:
+                type: string
+                description: |
+                  The new category for the transaction. 
+                  If empty = no update (no change in Db). 
+                  Examples allowed values: 'Food', 'Travel', 'Entertainment', 'Shopping', 'Utilities', 'Health', 'Education', 'Other'. 
+                enum:
+                - "Food"
+                - "Travel"
+                - "Entertainment"
+                - "Shopping"
+                - "Utilities"
+                - "Health"
+                - "Education"
+                - "Other"
+              notes:
+                type: string
+                description: The new notes for the transaction, can be empty
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success updating transaction notes
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+          examples:
+            application/json:
+              status: 200
+              message: "Success updating notes transaction"
+              body:
+                transaction:
+                  id: "objectId0020"
+                  date: "2020-06-20T14:30:00Z"
+                  description: "Golden Sun Bakery"
+                  amount: 5
+                  balance: 2082.79
+                  transactionType: "Electronic"
+                  category: "new text"
+                  notes: "new text"
+                  userIdOfNote: "67c7352eb891884d709ab384"
+        '400':
+          description: Invalid request parameters.
+          examples:
+            application/json:
+              status: 400
+              message: "Invalid fields detected in request."
+              details:
+                errors:
+                  - "id is required and must be a valid transaction ID."
+                  - "category must be a valid category."
+                  - "notes must be a valid string."
+        '401':
+            description: Unauthorized - Missing or invalid authentication token.
+            examples:
+              application/json:
+                status: 401
+                message: "Authentication required. Please provide a valid Bearer token."
+        '403':
+            description: Forbidden - User does not have access to this transaction.
+            examples:
+              application/json:
+                status: 403
+                message: "You do not have permission to update this transaction."
+        '404':
+            description: Transaction not found.
+            examples:
+              application/json:
+                status: 404
+                message: "Transaction not found with the given ID."
+                details:
+                  reasons:
+                    - "Transaction ID does not exist."
+                    - "The transaction does not belong to the authenticated user."
+        '422':
+            description: Unprocessable Entity - Validation errors in request parameters.
+            examples:
+              application/json:
+                status: 422
+                message: "Validation error."
+                errors:
+                  - field: "id"
+                    message: "Invalid transaction ID format."
+                  - field: "category"
+                    message: "Category must be one of the predefined values."
+                  - field: "notes"
+                    message: "Notes must be a valid string."
+        '500':
+            description: Internal Server Error - Something went wrong on the server.
+            examples:
+              application/json:
+                status: 500
+                message: "An unexpected error occurred. Please try again later."
+
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+
+
+definitions:
+  User:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+      firstName:
+        type: string
+        description: user first name
+      lastName:
+        type: string
+        description: user last name
+  Login:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+  ApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+          email:
+            type: string
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+  UserProfile:
+    type: object
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+
+
+  # Phase2
+  Account:
+    type: object
+    properties:
+      id: 
+        type: string
+      accountNumber:
+        type: string
+      title: 
+        type: string
+      amount: 
+        type: number
+        format: float
+      description: 
+        type: string
+      usersId:
+        type: array
+        items:
+          type: string
+  Transaction:
+    type: object
+    properties:
+      id: 
+        type: string
+      date:
+        type: date-time
+      description: 
+        type: string
+      amount: 
+        type: number
+        format: float
+      balance: 
+        type: number
+        format: float
+      transactionType:
+         type: string
+         enum:
+           - "Electronic"
+           - "Cash"
+           - "Transfer"
+           - "Deposit"
+      category:
+         type: string
+         enum:
+           - "Food"
+           - "Travel"
+           - "Entertainment"
+           - "Shopping"
+           - "Utilities"
+           - "Health"
+           - "Education"
+           - "Other"
+      notes:
+        type: string
+      accountId:
+        type: string
+      userIdOfNote:
+        type: string
+  UserAccountsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          accounts:
+            type: array
+            items:
+              $ref: "#/definitions/Account"
+  TransactionResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          transaction:
+            $ref: "#/definitions/Transaction"
+  UserAccountTransactionsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          transactions:
+            type: array
+            items:
+              $ref: "#/definitions/Transaction"
+
+
+
+
+
+
+
+# Fonction de cette route intégré dans /user/accounts
+  # /user/account:
+  #   post:
+  #     security:
+  #       - Bearer: []
+  #     tags:
+  #       - Account Module (not implemented)
+  #     summary: Retrieve User Account API
+  #     description: |
+  #         API to retrieve the user account associated with the authenticated user.
+
+  #         - This API allows the user to fetch their account by providing the `id` of the account in the request body. The user making the request must be authenticated, and the `userId` extracted from the JWT token must match one of the `usersId` associated with the account. 
+  #         - The `userId` is validated via the JWT, and the request will only be successful if the authenticated user has permission to access the requested account.
+  #         - If the account ID does not exist or does not belong to the authenticated user, a corresponding error message will be returned.
+  #     parameters:
+  #       - in: header
+  #         name: Authorization
+  #         description: Attach Bearer JWT token
+  #         required: true
+  #       - in: body
+  #         name: body
+  #         description: Account ID to fetch the user account based on the authenticated user
+  #         required: true
+  #         schema:
+  #           type: object
+  #           properties:
+  #             id:
+  #               type: string
+  #               description: The ID of the account to retrieve
+  #     produces:
+  #       - application/json
+  #     responses:
+  #       '200':
+  #         description: User account retrieved successully
+  #         schema:
+  #           $ref: '#/definitions/UserAccountResponse'
+  #         examples:
+  #           application/json:
+  #             status: 200
+  #             message: "Success fetching user account"
+  #             body:
+  #               account:
+  #                   id: "objectId0001"
+  #                   accountNumber: "x8349"
+  #                   title: "Argent Bank Checking"
+  #                   amount: 2082.79
+  #                   description: "Available Balance"
+  #       '400':
+  #         description: Invalid request parameters.
+  #         examples:
+  #           application/json:
+  #             status: 400
+  #             message: "Invalid fields detected in request."
+  #             details:
+  #               errors:
+  #                 - "id is required and must be a valid account ID."
+  #                 - "userId must match the authenticated user's ID."
+  #       '401':
+  #           description: Unauthorized - Missing or invalid authentication token.
+  #           examples:
+  #             application/json:
+  #               status: 401
+  #               message: "Authentication required. Please provide a valid Bearer token."
+  #       '403':
+  #           description: Forbidden - User does not have access to this account.
+  #           examples:
+  #             application/json:
+  #               status: 403
+  #               message: "You do not have permission to access this account."
+  #       '404':
+  #           description: Account not found.
+  #           examples:
+  #             application/json:
+  #               status: 404
+  #               message: "Account not found with the given ID."
+  #               details:
+  #                 reasons:
+  #                   - "Account ID does not exist."
+  #                   - "Account does not belong to the authenticated user."
+  #       '500':
+  #           description: Internal Server Error - Something went wrong on the server.
+  #           examples:
+  #             application/json:
+  #               status: 500
+  #               message: "An unexpected error occurred. Please try again later."
+
+
+# definitions:
+    # UserAccountResponse:
+    # type: object
+    # properties:
+    #   status:
+    #     type: integer
+    #   message:
+    #     type: string
+    #   body:
+    #     type: object
+    #     properties:
+    #       account:
+    #         $ref: "#/definitions/Account"
