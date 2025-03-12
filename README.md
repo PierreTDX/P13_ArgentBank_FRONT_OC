@@ -94,7 +94,11 @@ L'application est dépoyée ici : [https://p13-argentbank-oc.vercel.app/](https:
 # Phase 2 : Transactions
 
 Nous sommes encore en phase de conception.  
-Puisque vous gérez déjà l'application web pour la phase 1, nous voulons connaître votre avis sur la façon dont vous pensez que les API devraient être modélisées du côté back end. Nous avons besoin que vous nous fournissiez un document décrivant les API proposées pour les transactions, en suivant les directives de Swagger. 
+Puisque vous gérez déjà l'application web pour la phase 1, nous voulons connaître votre avis sur la façon dont vous pensez que les API devraient être modélisées du côté back end. Nous avons besoin que vous nous fournissiez un document décrivant les API proposées pour les transactions, en suivant les directives de Swagger.
+
+## Maquette
+
+![Maquette Transactions](./public/transactions.png)
 
 ## Propositions
 
