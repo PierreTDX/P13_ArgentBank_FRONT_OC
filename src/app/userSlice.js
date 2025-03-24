@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+// Récupérer les données persistées depuis le localStorage (si elles existent)
+const storedUser = JSON.parse(localStorage.getItem("user"));
+
+const initialState = storedUser || {
     email: "",
     firstName: "",
     lastName: "",
@@ -15,6 +18,8 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       Object.assign(state, action.payload); // Met à jour chaque propriété de state
+      // Sauvegarder les données dans le localStorage
+      localStorage.setItem("user", JSON.stringify(state)); // Persister dans le localStorage
     },
   },
 });

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import { selectUser } from "../../app/selectors"
-import { useUserProfile } from "../../hooks/useUserProfile"
+// import { useUserProfile } from "../../hooks/useUserProfile"
 import { useUpdateUserProfile } from "../../hooks/useUpdateUserProfile"
 import "./editNameForm.scss"
 
@@ -9,8 +9,8 @@ function EditNameForm() {
     const { firstName, lastName } = useSelector(selectUser)
     const [isEditing, setIsEditing] = useState(false)
 
-    // Utilisation du hook pour récupérer le profil utilisateur
-    useUserProfile()
+    // Utilisation du hook pour récupérer le profil utilisateur = pas besoin grace à Redux
+    // useUserProfile()
 
     // Utilisation du hook pour la mise à jour du profil
     const { handleUpdate } = useUpdateUserProfile()

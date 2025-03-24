@@ -3,11 +3,15 @@ import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { loginAction } from "../app/logSlice" // Action Redux
 import { login } from "../api/apiService" // Fonction API
+import { useUserProfile } from "./useUserProfile"
 
 export function useLogin() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [error, setError] = useState("")
+
+    // Appel à useUserProfile à l'intérieur du hook personnalisé
+    const userProfile = useUserProfile()
 
     const handleLogin = async (email, password) => {
         setError(""); // Reset des erreurs avant la tentative
@@ -32,5 +36,6 @@ export function useLogin() {
     return {
         handleLogin,
         error,
+        userProfile,
     }
 }

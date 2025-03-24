@@ -21,6 +21,7 @@ const logSlice = createSlice({
 
       // Retirer du localStorage
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
     },
   },
 });
