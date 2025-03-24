@@ -55,7 +55,7 @@ export const getUserProfile = async () => {
         throw new Error("Token not found, please log in");
       }
   
-      const response = await apiService.post("/user/profile", { token: token });
+      const response = await apiService.post("/user/profile");
   
       return response.data;
     } catch (error) {
@@ -71,12 +71,7 @@ export const updateUserProfile = async (profileData) => {
         throw new Error("Token not found, please log in");
       }
   
-      const response = await apiService.put("/user/profile", profileData, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Ajoute le token dans l'en-tête
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await apiService.put("/user/profile", profileData);
   
       return response.data;
     } catch (error) {
