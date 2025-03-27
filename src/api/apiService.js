@@ -27,10 +27,14 @@ apiService.interceptors.request.use(
 export const login = async (email, password) => {
   try {
     const response = await apiService.post("/user/login", { email, password });
-    const { token } = response.data;
+
+    // Le token est dans response.data.body.token
+    const { token } = response.data.body; 
+       
     if (token) {
       localStorage.setItem("token", token);
     }
+
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

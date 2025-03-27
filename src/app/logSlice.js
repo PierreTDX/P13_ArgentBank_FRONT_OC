@@ -12,8 +12,6 @@ const logSlice = createSlice({
       // Connexion réussie, on met à jour l'état avec le token 
       state.token = action.payload.token;
 
-      // Sauvegarde dans le localStorage
-      localStorage.setItem("token", action.payload.token);
     },
     logoutAction: (state) => {
       // Déconnexion réussie, on met à jour l'état du token
