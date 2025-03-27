@@ -2,14 +2,15 @@ import "./header.scss"
 import Logo from "./../../assets/img/argentBankLogo.png"
 import { NavLink } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { selectToken, selectFirstName } from "./../../app/selectors" // Import des sélecteurs
+import { selectFirstName } from "./../../app/selectors" // Import des sélecteurs
+import useAuth from "../../hooks/useAuth"; // Import du hook personnalisé
 // import { useUserProfile } from "../../hooks/useUserProfile"
 
 function Header() {
 
   // Utilisation des sélecteurs pour récupérer les infos utilisateur depuis Redux
   const firstName = useSelector(selectFirstName);
-  const isAuthenticated = useSelector(selectToken)
+  const { isAuthenticated } = useAuth(); // Utilisation du hook ici
 
   // Utilisation du hook pour récupérer le profil utilisateur = pas besoin grace à Redux
   // useUserProfile()
