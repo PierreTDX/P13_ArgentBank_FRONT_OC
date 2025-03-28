@@ -4,12 +4,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const storedUser = JSON.parse(localStorage.getItem("user"));
 
 const initialState = storedUser || {
-    email: "",
-    firstName: "",
-    lastName: "",
-    createdAt: "",
-    updatedAt: "",
-    id: "",
+  email: "",
+  firstName: storedUser.firstName || "",
+  lastName: storedUser.lastName || "",
+  createdAt: "",
+  updatedAt: "",
+  id: storedUser.id || "",
 };
 
 const userSlice = createSlice({
@@ -19,7 +19,8 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       Object.assign(state, action.payload); // Met à jour chaque propriété de state
       // Sauvegarder les données dans le localStorage
-      localStorage.setItem("user", JSON.stringify(state)); // Persister dans le localStorage
+      const { firstName, lastName, id } = state;
+      localStorage.setItem("user", JSON.stringify({ firstName, lastName, id })); // Persister dans le localStorage
     },
   },
 });
