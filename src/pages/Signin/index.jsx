@@ -1,13 +1,13 @@
 import "./signin.scss"
 import { useNavigate } from "react-router-dom"
-import { useLogin } from "../../hooks/useLogin"
+import { useLoginAndGetUser } from "../../hooks/useLogin"
 import { useSelector } from "react-redux"
 import { selectLodingSession } from "../../app/selectors"
 import LoaderSession from "../../components/Loader"
 
 function Signin() {
     const navigate = useNavigate()
-    const { handleLogin, error } = useLogin() // Utilisation du hook personnalisé
+    const { handleLogin, error } = useLoginAndGetUser() // Utilisation du hook personnalisé
     const loading = useSelector(selectLodingSession) // Récupérer l'état 'loading' depuis le store
     const savedEmail = localStorage.getItem("email")
 

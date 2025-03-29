@@ -26,14 +26,17 @@ apiService.interceptors.request.use(
 // Fonction pour se connecter et stocker le token
 export const login = async (email, password) => {
   try {
-    const response = await apiService.post("/user/login", { email, password });
+        // Effacer les anciennes données
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
 
-    // Le token est dans response.data.body.token
-    const { token } = response.data.body; 
-       
-    if (token) {
-      localStorage.setItem("token", token);
-    }
+        const response = await apiService.post("/user/login", { email, password });
+
+        const { token } = response.data.body; 
+          
+        if (token) {
+          localStorage.setItem("token", token);
+        }
 
     return response.data;
   } catch (error) {
@@ -59,8 +62,8 @@ export const getUserProfile = async () => {
         throw new Error("Token not found, please log in");
       }
   
-      const response = await apiService.post("/user/profile");
-  
+      const response = await apiService.post("/user/profile");  
+
       return response.data;
     } catch (error) {
         throw error.response?.data || error.message;
