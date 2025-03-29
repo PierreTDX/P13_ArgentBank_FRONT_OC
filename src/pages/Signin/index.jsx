@@ -24,6 +24,7 @@ function Signin() {
         handleLogin(email, password)
 
         // Sauvegarder l'email dans le localStorage si "Remember me" est coché
+        // un remember me par le JWT n'est pas possible, car il est supprimé à la deconnexion
         if (rememberMe) {
             localStorage.setItem("email", email)
         } else {
