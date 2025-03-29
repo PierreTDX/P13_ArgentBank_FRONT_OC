@@ -104,13 +104,15 @@ Puisque vous gérez déjà l'application web pour la phase 1, nous voulons conna
 
 1. Les routes
 
-![Aperçu de post:user/accounts](./public/P13_ArgentBank_Swagger_UI_POST_user_accounts.png)
+![Aperçu de get:user/accounts](./public/P13_ArgentBank_Swagger_UI_GET_user_accounts.png)
 
-![Aperçu de post:user/account/transactions](./public/P13_ArgentBank_Swagger_UI_POST_user_account_transactions.png)
+![Aperçu de get:user/accounts/id](./public/P13_ArgentBank_Swagger_UI_GET_user_accounts_accountId.png)
 
-![Aperçu de post:user/account/transaction](./public/P13_ArgentBank_Swagger_UI_POST_user_account_transaction.png)
+![Aperçu de get:user/accounts/id/transactions](./public/P13_ArgentBank_Swagger_UI_GET_user_accounts_accountId_transactions.png)
 
-![Aperçu de patch:user/account/transaction](./public/P13_ArgentBank_Swagger_UI_PATCH_user_account_transaction.png)
+![Aperçu de get:user/accounts/id/transactions/id](./public/P13_ArgentBank_Swagger_UI_GET_user_accounts_accountId_transactions_transactionId.png)
+
+![Aperçu de patch:user/accounts/id/transactions/id](./public/P13_ArgentBank_Swagger_UI_PATCH_user_accounts_accountId_transactions_transactionId.png)
 
 2. Models
 
