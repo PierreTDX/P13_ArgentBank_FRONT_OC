@@ -1,10 +1,14 @@
 import "./signin.scss"
-// import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useLogin } from "../../hooks/useLogin"
+import { useSelector } from "react-redux"
+import { selectLodingSession } from "../../app/selectors"
+import LoaderSession from "../../components/Loader"
 
 function Signin() {
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
     const { handleLogin, error } = useLogin() // Utilisation du hook personnalisé
+    const loading = useSelector(selectLodingSession) // Récupérer l'état 'loading' depuis le store
     const savedEmail = localStorage.getItem("email")
 
     const handleSubmit = async (e) => {
@@ -40,8 +44,8 @@ function Signin() {
                                 type="email"
                                 id="email"
                                 name="email"
-                                defaultValue={savedEmail || ""}
                                 required
+                                defaultValue={savedEmail || ""}
                             />
                         </div>
                         <div className="input-wrapper">
@@ -62,20 +66,21 @@ function Signin() {
                             />
                             <label htmlFor="remember-me">Remember me</label>
                         </div>
+                        {/* Afficher le message d'erreur */}
                         {error && <p className="error-message">{error}</p>}
-                        <button type="submit" className="sign-in-button">
-                            Sign In
+                        <button type="submit" className="sign-in-button" disabled={loading}>
+                            {loading ? (<LoaderSession />) : ("Sign In")}
                         </button>
                     </form>
                 </section>
                 <p>Email : tony@stark.com / steve@rogers.com</p>
                 <p>Password : password123 / password456</p>
-                {/* <section className="sign-in-content sign-up-content">
+                <section className="sign-in-content sign-up-content">
                     <h1>New customer</h1>
                     <button onClick={() => navigate("/signup")} className="sign-in-button">
                         Sign Up
                     </button>
-                </section> */}
+                </section>
             </main>
         </div>
     )

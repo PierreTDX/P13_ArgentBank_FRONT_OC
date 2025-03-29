@@ -1,14 +1,12 @@
 import './loader.scss'
 
-function Loader() {
+function LoaderSession() {
 
     return (
         <>
-            <div className='loader'>
-                <p>Loading</p>
-            </div>
+            <div className='loader'></div>
         </>
     )
 }
 
-export default Loader
+export default LoaderSession
